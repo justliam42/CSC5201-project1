@@ -1,6 +1,6 @@
 # CSC4201 — Mini-Project — Part 1
 
-Liam Otten
+Liam Otten  
 October 2026
 
 ---
@@ -13,7 +13,6 @@ You are not responsible for the entire application (at least, not yet!), but you
 services.
 ### The Services
 Here we are documenting a minimal API for each of the services. For now you are only implementing one
-
 of them, but it may be helpful to see how your service fits into the larger whole.
 **Catalog** service provides a listing of the products available on the site. Each product has a product id, name,
 textual description, price in US Dollars, and list of categories.
@@ -44,7 +43,7 @@ POST to /emails/user id to send a message.
 **Recommendation** service returns a list of up to 5 products from the catalog which are recommended based
 on the user’s current cart contents.
 It has a single endpoint recommendations/user id
-##
+
 **Frontend** service will serve webpages whose content depends on the other services.
 
 ---
