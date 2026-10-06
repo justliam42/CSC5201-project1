@@ -1,5 +1,6 @@
 substitutions:
   _ARTIFACT_REGISTRY_REPO: 'cart-api'
+  _REDIS_PORT: '6379'
 
 steps:
   # Install dependencies
@@ -31,6 +32,8 @@ steps:
       - '--region=us-central1'
       - '--port=5000'
       - '--allow-unauthenticated'
+      - '--set-env-vars=REDIS_HOST=${_REDIS_HOST},REDIS_PORT=${_REDIS_PORT}'
+      - '--vpc-connector=${_VPC_CONNECTOR}'
 
 options:
   logging: CLOUD_LOGGING_ONLY
