@@ -1,0 +1,37 @@
+substitutions:
+  _ARTIFACT_REGISTRY_REPO: 'cart-api'
+
+steps:
+  # Install dependencies
+  - name: 'python:3.12'
+    entrypoint: bash
+    args:
+      - -c
+      - |
+        pip install -r requirements.txt
+
+  # Docker build
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'us-central1-docker.pkg.dev/${PROJECT_ID}/${_ARTIFACT_REGISTRY_REPO}/cart-api:${SHORT_SHA}', '.']
+
+  # Docker push to Artifact Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'us-central1-docker.pkg.dev/${PROJECT_ID}/${_ARTIFACT_REGISTRY_REPO}/cart-api:${SHORT_SHA}']
+
+  # Deploy to Cloud Run
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+      - 'run'
+      - 'deploy'
+      - 'cart-service'
+      - '--image=us-central1-docker.pkg.dev/${PROJECT_ID}/${_ARTIFACT_REGISTRY_REPO}/cart-api:${SHORT_SHA}'
+      - '--region=us-central1'
+      - '--port=5000'
+      - '--allow-unauthenticated'
+
+options:
+  logging: CLOUD_LOGGING_ONLY
+
+images:
+  - 'us-central1-docker.pkg.dev/${PROJECT_ID}/${_ARTIFACT_REGISTRY_REPO}/cart-api:${SHORT_SHA}'

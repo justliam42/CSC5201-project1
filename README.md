@@ -68,3 +68,8 @@ code).
 that it uses) to the cloud.
 - Demonstrate your service running in the cloud during or prior to next week’s lab.
 - Submit the URL of your repo to Canvas to indicate you are done with part 1.
+
+
+
+## Implementation
+For simplicity I will use docker compose and start a redis container alongside my web application. This is mostly following the [getting started example](https://docs.docker.com/compose/gettingstarted) from docker in which they do something very similar.
