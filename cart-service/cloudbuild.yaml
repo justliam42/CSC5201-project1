@@ -4,6 +4,7 @@ substitutions:
 steps:
   # Install dependencies
   - name: 'python:3.12'
+    dir: cart-service
     entrypoint: bash
     args:
       - -c
@@ -12,6 +13,7 @@ steps:
 
   # Docker build
   - name: 'gcr.io/cloud-builders/docker'
+    dir: cart-service
     args: ['build', '-t', 'us-central1-docker.pkg.dev/${PROJECT_ID}/${_ARTIFACT_REGISTRY_REPO}/cart-api:${SHORT_SHA}', '.']
 
   # Docker push to Artifact Registry
