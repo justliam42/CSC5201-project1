@@ -18,6 +18,18 @@ steps:
     dir: cart-service
     args: ['build', '-t', 'us-central1-docker.pkg.dev/${PROJECT_ID}/${_ARTIFACT_REGISTRY_REPO}/cart-api:${SHORT_SHA}', '.']
 
+  # Run tests against an isolated Redis container
+  - name: 'gcr.io/cloud-builders/docker'
+    dir: cart-service
+    entrypoint: bash
+    args:
+      - -c
+      - |
+        docker network create cart-test >/dev/null 2>&1 || true
+        docker run -d --name cart-redis --network cart-test redis:alpine
+        trap 'docker rm -f cart-redis >/dev/null 2>&1 || true; docker network rm cart-test >/dev/null 2>&1 || true' EXIT
+        docker run --rm --network cart-test -e REDIS_HOST=cart-redis -e REDIS_PORT=6379 us-central1-docker.pkg.dev/${PROJECT_ID}/${_ARTIFACT_REGISTRY_REPO}/cart-api:${SHORT_SHA} pytest tests.py -q
+
   # Docker push to Artifact Registry
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'us-central1-docker.pkg.dev/${PROJECT_ID}/${_ARTIFACT_REGISTRY_REPO}/cart-api:${SHORT_SHA}']
