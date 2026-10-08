@@ -1,6 +1,8 @@
 substitutions:
   _ARTIFACT_REGISTRY_REPO: 'cart-api'
+  _REDIS_HOST: '10.10.0.117'
   _REDIS_PORT: '6379'
+  _VPC_CONNECTOR: 'default'
 
 steps:
   # Install dependencies

@@ -60,7 +60,6 @@ You are in charge of implementing the Cart service. It should use a Redis databa
 each customer’s cart. (More than one simultaneous customer is possible.) Make sure that the database is not
 ephemeral; all instances of your service should share the same database. We will not (yet) verify user ids;
 presumably they are set/enforced by the frontend service.  
-  
 ### Other Requirements
 - You should create a GitHub repo for your service, and add me to it (so that I can at least see your
 code).
@@ -73,3 +72,4 @@ that it uses) to the cloud.
 
 ## Implementation
 For simplicity I will use docker compose and start a redis container alongside my web application. This is mostly following the [getting started example](https://docs.docker.com/compose/gettingstarted) from docker in which they do something very similar.
+  
