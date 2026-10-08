@@ -19,14 +19,14 @@ async def getUserItems(user_id: int):
 
 @userRouter.post("/{user_id}", status_code=status.HTTP_201_CREATED)
 async def addUserItems(user_id: int, item: Item):
-    with redis.Redis(host=os.getenv("REDIS_HOST", "redis"), port=int(os.getenv("REDIS_PORT", "6379")), db=0, decode_responses=True) as r:
+    with redis.Redis(host=os.getenv("REDIS_HOST", "10.10.0.117"), port=int(os.getenv("REDIS_PORT", "6379")), db=0, decode_responses=True) as r:
         r.rpush(f"user:{user_id}:items", item.json())
 
     return {"message": f"Item {item.id} added to user {user_id}'s cart."}
 
 @userRouter.post("/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def deleteUserItem(user_id: int, item_id: int):
-    with redis.Redis(host=os.getenv("REDIS_HOST", "redis"), port=int(os.getenv("REDIS_PORT", "6379")), db=0, decode_responses=True) as r:
+    with redis.Redis(host=os.getenv("REDIS_HOST", "10.10.0.117"), port=int(os.getenv("REDIS_PORT", "6379")), db=0, decode_responses=True) as r:
         items = r.lrange(f"user:{user_id}:items", 0, -1)
         for item in items:
             item_data = Item.parse_raw(item)
