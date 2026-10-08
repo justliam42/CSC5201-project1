@@ -18,7 +18,7 @@ RUN pip install -r requirements.txt
 # Copy the current directory `.` in the project to the workdir `.` in the image
 COPY . .
 
-ENV REDIS_HOST=10.10.0.117
+ENV REDIS_HOST=10.10.0.116
 ENV REDIS_PORT=6379
 
 EXPOSE 5000
