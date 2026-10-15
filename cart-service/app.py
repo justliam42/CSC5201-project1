@@ -26,9 +26,7 @@ async def getUserItems(user_id: int):
         items = r.lrange(f"user:{user_id}:items", 0, -1)
 
     if items:
-        return {
-            [Item.model_validate_json(item).model_dump() for item in items],
-        }
+        return [Item.model_validate_json(item).model_dump() for item in items]
     else:
         return Response(status_code=status.HTTP_404_NOT_FOUND)
 
