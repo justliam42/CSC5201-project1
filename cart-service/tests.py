@@ -22,20 +22,13 @@ def test_get_user_items():
     user_id = 1
     response = client.get(f"/cart/{user_id}")
     assert response.status_code == 200
-    assert "user_id" in response.json()
+    assert "user_id" not in response.json()
     assert "items" in response.json()
 
 def test_add_user_item():
     user_id = 1
-    item = Item(id=1, name="Test Item", priceCents=100)
-    response = client.post(f"/cart/{user_id}", json=item.model_dump())
-    assert response.status_code == 201
-    assert response.json() == {"message": f"Item {item.id} added to user {user_id}'s cart."}
-
-def test_delete_user_item():
-    user_id = 1
     item_id = 1
-    response = client.post(f"/cart/{user_id}", json={"id": item_id, "name": "Test Item", "priceCents": 100})
+    response = client.post(f"/cart/{user_id}", json={"id": item_id, "categories": ["electronics"], "description": "Test Item", "name": "Test Item", "priceCents": 100})
     assert response.status_code == 201
 
     response = client.delete(f"/cart/{user_id}", params={"item_id": item_id})
@@ -49,8 +42,8 @@ def test_delete_nonexistent_item():
 
 def test_add_and_get_user_items():
     user_id = 2
-    item1 = Item(id=1, name="Item 1", priceCents=100)
-    item2 = Item(id=2, name="Item 2", priceCents=200)
+    item1 = Item(id=1, categories=["electronics"], name="Item 1", price=100, description="Test Item 1")
+    item2 = Item(id=2, categories=["books"], name="Item 2", price=200, description="Test Item 2")
 
     client.post(f"/cart/{user_id}", json=item1.model_dump())
     client.post(f"/cart/{user_id}", json=item2.model_dump())

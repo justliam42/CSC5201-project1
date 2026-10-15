@@ -27,8 +27,7 @@ async def getUserItems(user_id: int):
 
     if items:
         return {
-            "user_id": user_id,
-            "items": [Item.model_validate_json(item).model_dump() for item in items],
+            [Item.model_validate_json(item).model_dump() for item in items],
         }
     else:
         return Response(status_code=status.HTTP_404_NOT_FOUND)
