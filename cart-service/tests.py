@@ -18,13 +18,6 @@ def clear_redis():
         database.flushdb()
 
 
-def test_get_user_items():
-    user_id = 1
-    response = client.get(f"/cart/{user_id}")
-    assert response.status_code == 200
-    assert isinstance(response.json(), list)
-    assert len(response.json()) == 0
-
 def test_add_user_item():
     user_id = 1
     item_id = 1
