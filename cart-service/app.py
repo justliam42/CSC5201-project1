@@ -6,12 +6,13 @@ userRouter = APIRouter(prefix="/cart", tags=["Cart"])
 
 class Item(BaseModel):
     id: int
+    categories: list[str]
+    description: str
     name: str
-    priceCents: int
-
+    price: float
 
 def get_redis():
-    return redis.Redis(
+    return redis.redis(
         host=os.getenv("REDIS_HOST", "redis"),
         port=int(os.getenv("REDIS_PORT", "6379")),
         db=0,
@@ -24,10 +25,13 @@ async def getUserItems(user_id: int):
     with get_redis() as r:
         items = r.lrange(f"user:{user_id}:items", 0, -1)
 
-    return {
-        "user_id": user_id,
-        "items": [Item.model_validate_json(item).model_dump() for item in items],
-    }
+    if items:
+        return {
+            "user_id": user_id,
+            "items": [Item.model_validate_json(item).model_dump() for item in items],
+        }
+    else:
+        return Response(status_code=status.HTTP_404_NOT_FOUND)
 
 @userRouter.post("/{user_id}", status_code=status.HTTP_201_CREATED)
 async def addUserItems(user_id: int, item: Item):
