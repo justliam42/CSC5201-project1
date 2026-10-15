@@ -22,8 +22,8 @@ def test_get_user_items():
     user_id = 1
     response = client.get(f"/cart/{user_id}")
     assert response.status_code == 200
-    assert "user_id" not in response.json()
-    assert "items" in response.json()
+    assert isinstance(response.json(), list)
+    assert len(response.json()) == 0
 
 def test_add_user_item():
     user_id = 1
@@ -50,7 +50,7 @@ def test_add_and_get_user_items():
 
     response = client.get(f"/cart/{user_id}")
     assert response.status_code == 200
-    items = response.json()["items"]
+    items = response.json()
     assert isinstance(items, list)
     assert len(items) == 2
     assert any(item["id"] == item1.id for item in items)
